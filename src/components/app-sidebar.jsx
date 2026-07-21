@@ -1,186 +1,114 @@
-"use client"
-
 import * as React from "react"
 
+import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
+import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import {
+  LayoutDashboardIcon,
+  FileTextIcon,
+  FolderIcon,
+  UsersIcon,
+  BarChartIcon,
+  DatabaseIcon,
+  FileChartColumnIcon,
+  Settings2Icon,
+  CircleHelpIcon,
+  LeafIcon,
+} from "lucide-react"
 
-// This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Administrador",
+    email: "admin@ecotecfloramedica.com",
+    avatar: "",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: (
-        <GalleryVerticalEndIcon />
-      ),
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: (
-        <AudioLinesIcon />
-      ),
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: (
-        <TerminalIcon />
-      ),
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: (
-        <TerminalSquareIcon />
-      ),
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboardIcon,
     },
     {
-      title: "Models",
-      url: "#",
-      icon: (
-        <BotIcon />
-      ),
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
+      title: "Contenidos",
+      url: "#contenidos",
+      icon: FileTextIcon,
     },
     {
-      title: "Documentation",
-      url: "#",
-      icon: (
-        <BookOpenIcon />
-      ),
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
+      title: "Categorías",
+      url: "#categorias",
+      icon: FolderIcon,
     },
     {
-      title: "Settings",
-      url: "#",
-      icon: (
-        <Settings2Icon />
-      ),
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
+      title: "Colaboradores",
+      url: "#colaboradores",
+      icon: UsersIcon,
+    },
+    {
+      title: "Analíticas",
+      url: "#analiticas",
+      icon: BarChartIcon,
     },
   ],
-  projects: [
+  documents: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: (
-        <FrameIcon />
-      ),
+      name: "Biblioteca de medios",
+      url: "#medios",
+      icon: DatabaseIcon,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: (
-        <PieChartIcon />
-      ),
+      name: "Reportes",
+      url: "#reportes",
+      icon: FileChartColumnIcon,
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Configuración",
+      url: "#configuracion",
+      icon: Settings2Icon,
     },
     {
-      name: "Travel",
-      url: "#",
-      icon: (
-        <MapIcon />
-      ),
+      title: "Ayuda",
+      url: "#ayuda",
+      icon: CircleHelpIcon,
     },
   ],
 }
 
-export function AppSidebar({
-  ...props
-}) {
+export function AppSidebar({ ...props }) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
+              render={<a href="/dashboard" />}
+            >
+              <LeafIcon className="size-5!" />
+              <span className="text-base font-semibold">Ecotec Flora Médica</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavDocuments items={data.documents} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
-  );
+  )
 }

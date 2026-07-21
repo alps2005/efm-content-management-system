@@ -1,53 +1,53 @@
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { Button } from "@/components/ui/button"
 import {
   SidebarGroup,
-  SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
-import { ChevronRightIcon } from "lucide-react"
+import { PlusCircleIcon, MailIcon } from "lucide-react"
 
-export function NavMain({
-  items
-}) {
+export function NavMain({ items }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-            render={<SidebarMenuItem />}>
-            <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title} />}>
-              {item.icon}
-              <span>{item.title}</span>
-              <ChevronRightIcon
-                className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                {item.items?.map((subItem) => (
-                  <SidebarMenuSubItem key={subItem.title}>
-                    <SidebarMenuSubButton render={<a href={subItem.url} />}>
-                      <span>{subItem.title}</span>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </Collapsible>
-        ))}
-      </SidebarMenu>
+      <SidebarGroupContent className="flex flex-col gap-2">
+        {/* Quick Create row */}
+        <SidebarMenu>
+          <SidebarMenuItem className="flex items-center gap-2">
+            <SidebarMenuButton
+              tooltip="Nuevo contenido"
+              className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
+            >
+              <PlusCircleIcon className="size-4" />
+              <span>Nuevo contenido</span>
+            </SidebarMenuButton>
+            <Button
+              size="icon"
+              className="size-8 group-data-[collapsible=icon]:opacity-0"
+              variant="outline"
+            >
+              <MailIcon className="size-4" />
+              <span className="sr-only">Notificaciones</span>
+            </Button>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        {/* Nav links */}
+        <SidebarMenu>
+          {items.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                render={<a href={item.url} />}
+              >
+                <item.icon className="size-4" />
+                <span>{item.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
     </SidebarGroup>
-  );
+  )
 }
