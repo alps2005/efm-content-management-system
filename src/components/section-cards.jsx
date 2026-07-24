@@ -1,121 +1,88 @@
-import { Badge } from "@/components/ui/badge"
 import {
   Card,
-  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
-  TrendingUpIcon,
-  TrendingDownIcon,
-  FileTextIcon,
+  LeafIcon,
   CheckCircleIcon,
-  ClockIcon,
-  UsersIcon,
+  FileEditIcon,
+  Layers3Icon,
 } from "lucide-react"
 
-export function SectionCards() {
+export function SectionCards({ stats }) {
+  const total = stats?.total ?? "—"
+  const activos = stats?.activos ?? "—"
+  const borrador = stats?.borrador ?? "—"
+  const familiasCount = stats?.familiasCount ?? "—"
+
   return (
     <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
-      {/* Total de contenidos */}
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total de Contenidos</CardDescription>
+          <CardDescription>Total de Plantas</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            248
+            {total}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon className="size-3" />
-              +18%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Crecimiento este mes
-            <TrendingUpIcon className="size-4" />
+            Catálogo del atlas
+            <LeafIcon className="size-4" />
           </div>
           <div className="text-muted-foreground">
-            Artículos, páginas y medios registrados
+            Especies medicinales registradas
           </div>
         </CardFooter>
       </Card>
 
-      {/* Publicados */}
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Publicados</CardDescription>
+          <CardDescription>Activas</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            174
+            {activos}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon className="size-3" />
-              +8%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            70% del total activo
+            Visibles en el sitio público
             <CheckCircleIcon className="size-4" />
           </div>
-          <div className="text-muted-foreground">
-            Contenido visible para los usuarios
-          </div>
+          <div className="text-muted-foreground">Contenido publicado</div>
         </CardFooter>
       </Card>
 
-      {/* En revisión */}
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>En Revisión</CardDescription>
+          <CardDescription>En Borrador</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            42
+            {borrador}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <TrendingDownIcon className="size-3" />
-              -5%
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Pendientes de aprobación
-            <ClockIcon className="size-4" />
+            Pendientes de publicar
+            <FileEditIcon className="size-4" />
           </div>
-          <div className="text-muted-foreground">
-            Requieren revisión editorial
-          </div>
+          <div className="text-muted-foreground">Requieren revisión editorial</div>
         </CardFooter>
       </Card>
 
-      {/* Colaboradores activos */}
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Colaboradores Activos</CardDescription>
+          <CardDescription>Familias Taxonómicas</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            12
+            {familiasCount}
           </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon className="size-3" />
-              +2
-            </Badge>
-          </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Equipo en crecimiento
-            <UsersIcon className="size-4" />
+            Diversidad del catálogo
+            <Layers3Icon className="size-4" />
           </div>
-          <div className="text-muted-foreground">
-            Editores y revisores activos
-          </div>
+          <div className="text-muted-foreground">Familias botánicas representadas</div>
         </CardFooter>
       </Card>
     </div>

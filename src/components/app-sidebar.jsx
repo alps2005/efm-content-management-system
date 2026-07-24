@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Link } from "react-router-dom"
 
 import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/sidebar"
 import {
   LayoutDashboardIcon,
-  FileTextIcon,
   FolderIcon,
   UsersIcon,
   BarChartIcon,
@@ -39,9 +39,9 @@ const data = {
       icon: LayoutDashboardIcon,
     },
     {
-      title: "Contenidos",
-      url: "#contenidos",
-      icon: FileTextIcon,
+      title: "Plantas",
+      url: "/dashboard/plantas",
+      icon: LeafIcon,
     },
     {
       title: "Categorías",
@@ -93,7 +93,7 @@ export function AppSidebar({ ...props }) {
           <SidebarMenuItem>
             <SidebarMenuButton
               className="data-[slot=sidebar-menu-button]:p-1.5!"
-              render={<a href="/dashboard" />}
+              render={<Link to="/dashboard" />}
             >
               <LeafIcon className="size-5!" />
               <span className="text-base font-semibold">Ecotec Flora Médica</span>

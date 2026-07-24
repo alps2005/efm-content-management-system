@@ -1,3 +1,5 @@
+import { Link, useLocation } from "react-router-dom"
+
 import { Button } from "@/components/ui/button"
 import {
   SidebarGroup,
@@ -9,6 +11,8 @@ import {
 import { PlusCircleIcon, MailIcon } from "lucide-react"
 
 export function NavMain({ items }) {
+  const location = useLocation()
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -35,17 +39,25 @@ export function NavMain({ items }) {
 
         {/* Nav links */}
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                tooltip={item.title}
-                render={<a href={item.url} />}
-              >
-                <item.icon className="size-4" />
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isActive =
+              item.url === "/dashboard"
+                ? location.pathname === "/dashboard"
+                : location.pathname.startsWith(item.url)
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  isActive={isActive}
+                  render={<Link to={item.url} />}
+                >
+                  <item.icon className="size-4" />
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

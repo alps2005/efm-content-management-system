@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +32,7 @@ export function NavDocuments({ items }) {
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton render={<a href={item.url} />}>
+            <SidebarMenuButton render={<Link to={item.url} />}>
               <item.icon className="size-4" />
               <span>{item.name}</span>
             </SidebarMenuButton>
