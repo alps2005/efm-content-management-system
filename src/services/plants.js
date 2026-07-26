@@ -30,6 +30,32 @@ export async function removePlant(id) {
   return collection.remove(id)
 }
 
+function countBy(items, getKey) {
+  const counts = new Map()
+  for (const item of items) {
+    const key = getKey(item)
+    if (!key) continue
+    counts.set(key, (counts.get(key) ?? 0) + 1)
+  }
+  return [...counts.entries()].map(([name, value]) => ({ name, value }))
+}
+
+function buildTimeline(plants) {
+  const byDate = new Map()
+  for (const plant of plants) {
+    const date = plant.createdAt?.slice(0, 10)
+    if (!date) continue
+    byDate.set(date, (byDate.get(date) ?? 0) + 1)
+  }
+
+  const sortedDates = [...byDate.keys()].sort()
+  let running = 0
+  return sortedDates.map((date) => {
+    running += byDate.get(date)
+    return { date, total: running }
+  })
+}
+
 export async function getPlantsSummary() {
   const plants = collection.all()
   const total = plants.length
@@ -37,8 +63,20 @@ export async function getPlantsSummary() {
   const borrador = plants.filter((p) => p.estado === "BORRADOR").length
   const inactivos = plants.filter((p) => p.estado === "INACTIVO").length
   const familiasCount = new Set(plants.map((p) => p.taxonomia?.familia).filter(Boolean)).size
+  const porFamilia = countBy(plants, (p) => p.taxonomia?.familia)
+  const porClasificacion = countBy(plants, (p) => p.etnobotanica?.clasificacion)
+  const timeline = buildTimeline(plants)
 
-  return { total, activos, borrador, inactivos, familiasCount }
+  return {
+    total,
+    activos,
+    borrador,
+    inactivos,
+    familiasCount,
+    porFamilia,
+    porClasificacion,
+    timeline,
+  }
 }
 
 export const ESTADO_OPTIONS = ["ACTIVO", "BORRADOR", "INACTIVO"]
