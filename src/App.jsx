@@ -4,6 +4,7 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { PlantsListPage } from "@/pages/plantas/PlantsListPage";
 import { PlantFormPage } from "@/pages/plantas/PlantFormPage";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Toaster } from "@/components/ui/sonner";
 import "./App.css";
 
@@ -13,11 +14,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardPage />} />
-          <Route path="plantas" element={<PlantsListPage />} />
-          <Route path="plantas/nueva" element={<PlantFormPage mode="create" />} />
-          <Route path="plantas/:id/editar" element={<PlantFormPage mode="edit" />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="plantas" element={<PlantsListPage />} />
+            <Route path="plantas/nueva" element={<PlantFormPage mode="create" />} />
+            <Route path="plantas/:id/editar" element={<PlantFormPage mode="edit" />} />
+          </Route>
         </Route>
       </Routes>
       <Toaster />

@@ -1,10 +1,9 @@
 import * as React from "react"
 import { Link } from "react-router-dom"
 
-import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
+import { useAuth } from "@/context/AuthContext"
 import {
   Sidebar,
   SidebarContent,
@@ -14,24 +13,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {
-  LayoutDashboardIcon,
-  FolderIcon,
-  UsersIcon,
-  BarChartIcon,
-  DatabaseIcon,
-  FileChartColumnIcon,
-  Settings2Icon,
-  CircleHelpIcon,
-  LeafIcon,
-} from "lucide-react"
+import { LayoutDashboardIcon, LeafIcon } from "lucide-react"
 
 const data = {
-  user: {
-    name: "Administrador",
-    email: "admin@ecotecfloramedica.com",
-    avatar: "",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -43,49 +27,12 @@ const data = {
       url: "/dashboard/plantas",
       icon: LeafIcon,
     },
-    {
-      title: "Categorías",
-      url: "#categorias",
-      icon: FolderIcon,
-    },
-    {
-      title: "Colaboradores",
-      url: "#colaboradores",
-      icon: UsersIcon,
-    },
-    {
-      title: "Analíticas",
-      url: "#analiticas",
-      icon: BarChartIcon,
-    },
-  ],
-  documents: [
-    {
-      name: "Biblioteca de medios",
-      url: "#medios",
-      icon: DatabaseIcon,
-    },
-    {
-      name: "Reportes",
-      url: "#reportes",
-      icon: FileChartColumnIcon,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Configuración",
-      url: "#configuracion",
-      icon: Settings2Icon,
-    },
-    {
-      title: "Ayuda",
-      url: "#ayuda",
-      icon: CircleHelpIcon,
-    },
   ],
 }
 
 export function AppSidebar({ ...props }) {
+  const { user } = useAuth()
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -103,11 +50,9 @@ export function AppSidebar({ ...props }) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )
