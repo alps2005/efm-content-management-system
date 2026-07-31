@@ -1,7 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
+import { apiFetch } from "@/lib/api"
+import { decodeJwtPayload } from "@/lib/jwt"
+
 const AuthContext = createContext(null)
 const STORAGE_KEY = "efm_auth_user"
+const TOKEN_STORAGE_KEY = "efm_auth_token"
 
 function readStoredUser() {
   try {
@@ -14,6 +18,7 @@ function readStoredUser() {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => readStoredUser())
+  const [token, setToken] = useState(() => localStorage.getItem(TOKEN_STORAGE_KEY))
 
   useEffect(() => {
     if (user) {
@@ -23,17 +28,28 @@ export function AuthProvider({ children }) {
     }
   }, [user])
 
-  async function loginWithCredentials(email, password) {
-    const validEmail = import.meta.env.VITE_ADMIN_EMAIL
-    const validPassword = import.meta.env.VITE_ADMIN_PASSWORD
-
-    if (email !== validEmail || password !== validPassword) {
-      throw new Error("Credenciales incorrectas.")
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem(TOKEN_STORAGE_KEY, token)
+    } else {
+      localStorage.removeItem(TOKEN_STORAGE_KEY)
     }
+  }, [token])
 
+  async function loginWithCredentials(email, password) {
+    const response = await apiFetch("/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ correo: email, password }),
+    })
+
+    const payload = decodeJwtPayload(response.token)
+
+    setToken(response.token)
     setUser({
-      name: "Administrador",
-      email,
+      id: response.usuario.id,
+      name: response.usuario.nombreCompleto,
+      email: response.usuario.correo,
+      role: response.usuario.rol ?? payload?.rol ?? null,
       avatar: "",
       provider: "local",
     })
@@ -50,11 +66,12 @@ export function AuthProvider({ children }) {
 
   function logout() {
     setUser(null)
+    setToken(null)
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, loginWithCredentials, loginWithGoogle, logout }}
+      value={{ user, token, loginWithCredentials, loginWithGoogle, logout }}
     >
       {children}
     </AuthContext.Provider>
