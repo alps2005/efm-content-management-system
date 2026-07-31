@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
-import { apiFetch } from "@/lib/api"
-import { decodeJwtPayload } from "@/lib/jwt"
-
 const AuthContext = createContext(null)
 const STORAGE_KEY = "efm_auth_user"
 const TOKEN_STORAGE_KEY = "efm_auth_token"
+
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
 
 function readStoredUser() {
   try {
@@ -37,19 +37,16 @@ export function AuthProvider({ children }) {
   }, [token])
 
   async function loginWithCredentials(email, password) {
-    const response = await apiFetch("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ correo: email, password }),
-    })
+    if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      throw new Error("Correo o contraseña incorrectos.")
+    }
 
-    const payload = decodeJwtPayload(response.token)
-
-    setToken(response.token)
+    setToken("local-admin")
     setUser({
-      id: response.usuario.id,
-      name: response.usuario.nombreCompleto,
-      email: response.usuario.correo,
-      role: response.usuario.rol ?? payload?.rol ?? null,
+      id: "local-admin",
+      name: "Administrador",
+      email,
+      role: "admin",
       avatar: "",
       provider: "local",
     })
